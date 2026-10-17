@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2026 by anonymous (http://jsbin.com/culetovuta/1/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untuk Kesayangan 💛</title>
+    <!-- Menggunakan font lucu dari Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #fff9c4; /* Kuning pastel */
+            --card-bg: #fffdf0; /* Krem hangat */
+            --text-color: #5d4037;
+            --accent-pink: #f8bbd0;
+            --primary-yellow: #fbc02d;
+            --bar-bg: #ffe082;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animasi Background Hati/Bintang Mengambang */
+        .bg-particles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-particle {
+            position: absolute;
+            bottom: -50px;
+            animation: floatUp 8s linear infinite;
+            opacity: 0.5;
+            font-size: 1.5rem;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Container & Cards */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 90%;
+            max-width: 420px;
+            height: 550px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            width: 100%;
+            padding: 2rem 1.5rem;
+            border-radius: 24px;
+            box-shadow: 0 12px 35px rgba(251, 192, 45, 0.2);
+            text-align: center;
+            position: absolute;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 3px solid #fff;
+        }
+
+        /* State Transisi */
+        .card.hidden {
+            opacity: 0;
+            transform: scale(0.8) translateY(20px);
+            pointer-events: none;
+            visibility: hidden;
+        }
+
+        .card.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            visibility: visible;
+        }
+
+        /* Teks & Tipografi */
+        h1, h2 { color: var(--primary-yellow); margin-bottom: 15px; text-shadow: 1px 1px 0px rgba(0,0,0,0.05); }
+        h1 { font-size: 1.8rem; }
+        h2 { font-size: 1.5rem; }
+        
+        p {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            color: #6d4c41;
+        }
+
+        /* Boneka Interaktif */
+        .doll-container {
+            margin: 20px auto;
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        .doll-container:active {
+            transform: scale(0.9);
+        }
+
+        .shake {
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, 0, 0) scale(1.1); }
+            20%, 80% { transform: translate3d(4px, 0, 0) scale(1.1); }
+            30%, 50%, 70% { transform: translate3d(-6px, 0, 0) scale(1.1); }
+            40%, 60% { transform: translate3d(6px, 0, 0) scale(1.1); }
+        }
+
+        /* Progress Bar */
+        .progress-wrapper {
+            width: 80%;
+            height: 18px;
+            background-color: var(--bar-bg);
+            border-radius: 20px;
+            margin: 20px auto;
+            overflow: hidden;
+            border: 2px solid #fff;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff8a65, #ffb74d);
+            border-radius: 20px;
+            transition: width 0.3s ease;
+        }
+
+        /* Tombol Lucu */
+        .btn {
+            background: linear-gradient(135deg, #ffb74d, #ff9800);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1rem;
+            font-family: inherit;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+        }
+
+        /* Partikel Efek Klik */
+        .click-particle {
+            position: absolute;
+            pointer-events: none;
+            font-size: 1.5rem;
+            animation: popOut 1s ease-out forwards;
+            z-index: 50;
+        }
+
+        @keyframes popOut {
+            0% { transform: translate(0, 0) scale(0.5); opacity: 1; }
+            100% { transform: translate(var(--tx), var(--ty)) scale(1.5); opacity: 0; }
+        }
+
+        /* Daftar Pesan */
+        .message-box {
+            background-color: #fff9c4;
+            padding: 15px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            border-left: 5px solid var(--primary-yellow);
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        /* Scrollbar buat teks kalau kepanjangan */
+        .messages-container {
+            max-height: 250px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding-right: 5px;
+        }
+        
+        .messages-container::-webkit-scrollbar { width: 6px; }
+        .messages-container::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        .messages-container::-webkit-scrollbar-thumb { background: var(--primary-yellow); border-radius: 10px; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Background Animasi -->
+    <div class="bg-particles" id="bg-particles"></div>
+
+    <div class="container">
+        <!-- Tahap 1: Mini Game -->
+        <div class="card active" id="card-game">
+            <h2>Hai, <span id="display-nama"></span>! 👋</h2>
+            <p>Pencet pipi boneka kuning ini <strong><span id="target-klik"></span> kali</strong> buat buka pesannya!</p>
+            
+            <div class="doll-container floating" id="doll-btn">
+                <!-- SVG Karakter Boneka Kuning Lucu -->
+                <svg viewBox="0 0 100 100" width="160" height="160">
+                    <!-- Telinga Kiri -->
+                    <circle cx="20" cy="25" r="14" fill="#fbc02d" />
+                    <circle cx="20" cy="25" r="7" fill="#fff59d" />
+                    <!-- Telinga Kanan -->
+                    <circle cx="80" cy="25" r="14" fill="#fbc02d" />
+                    <circle cx="80" cy="25" r="7" fill="#fff59d" />
+                    <!-- Kepala -->
+                    <circle cx="50" cy="55" r="40" fill="#fbc02d" />
+                    <!-- Pipi Merona -->
+                    <ellipse cx="25" cy="60" rx="8" ry="5" fill="#f8bbd0" opacity="0.8" />
+                    <ellipse cx="75" cy="60" rx="8" ry="5" fill="#f8bbd0" opacity="0.8" />
+                    <!-- Mata -->
+                    <circle cx="35" cy="48" r="4" fill="#5d4037" />
+                    <circle cx="37" cy="46" r="1.5" fill="#ffffff" />
+                    <circle cx="65" cy="48" r="4" fill="#5d4037" />
+                    <circle cx="67" cy="46" r="1.5" fill="#ffffff" />
+                    <!-- Moncong & Mulut Senyum -->
+                    <ellipse cx="50" cy="65" rx="14" ry="10" fill="#fff59d" />
+                    <path d="M 43 64 Q 50 72 57 64" fill="none" stroke="#5d4037" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="50" cy="59" r="3" fill="#5d4037" />
+                </svg>
+            </div>
+
+            <div class="progress-wrapper">
+                <div class="progress-fill" id="progress-bar"></div>
+            </div>
+            <button class="btn" id="tap-btn">Kilik-kilik Boneka ✨</button>
+        </div>
+
+        <!-- Tahap 2: Pesan Ucapan -->
+        <div class="card hidden" id="card-message">
+            <!-- Boneka Pegang Surat/Hati -->
+            <div class="floating" style="margin-bottom: 10px;">
+                <svg viewBox="0 0 100 100" width="100" height="100">
+                    <circle cx="50" cy="45" r="35" fill="#fbc02d" />
+                    <circle cx="35" cy="40" r="3" fill="#5d4037" />
+                    <circle cx="65" cy="40" r="3" fill="#5d4037" />
+                    <path d="M 45 50 Q 50 55 55 50" fill="none" stroke="#5d4037" stroke-width="2" stroke-linecap="round"/>
+                    <!-- Surat/Hati -->
+                    <path d="M50 85 C50 85 30 65 30 52 A12 12 0 0 1 50 45 A12 12 0 0 1 70 52 C70 65 50 85 50 85 Z" fill="#ef5350"/>
+                </svg>
+            </div>
+            
+            <h1 id="display-judul"></h1>
+            <div class="messages-container" id="messages-container">
+                <!-- Teks ucapan akan dimuat di sini oleh JavaScript -->
+            </div>
+            <p id="display-penutup" style="font-weight: 600; color: #ff7043; margin-top:10px;"></p>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // AREA KONFIGURASI (SANGAT MUDAH DIEDIT)
+        // ==========================================
+        const CONFIG = {
+            namaPacar: "Khansa Aulia Zizi",
+            judulUtama: "Terima Kasih Ya, my baby syaaalaakuu💛",
+            isiPesan: [
+                "Makasihh udahh selalu ada buat aku, makasih udah bertahan sama aku selama ini, semoga kita selamanya ya, sayanGGGGG",
+                "Makasih udah sabar dan selalu bikin hari-hariku lebih berwarna.",
+                "Kamu itu ibarat boneka kuning ini, selalu bikin gemes dan nemenin aku terus."
+            ],
+            pesanPenutup: "I lovee uu moree than anythingg 🧸✨",
+            jumlahKlikGame: 5
+        };
+        // ==========================================
+
+
+        // --- LOGIKA PROGRAM (TIDAK PERLU DIUBAH) ---
+        let currentClicks = 0;
+
+        // Inisialisasi Teks dari CONFIG
+        document.getElementById('display-nama').textContent = CONFIG.namaPacar;
+        document.getElementById('target-klik').textContent = CONFIG.jumlahKlikGame;
+        document.getElementById('display-judul').textContent = CONFIG.judulUtama;
+        document.getElementById('display-penutup').textContent = CONFIG.pesanPenutup;
+
+        const messagesContainer = document.getElementById('messages-container');
+        CONFIG.isiPesan.forEach(pesan => {
+            let div = document.createElement('div');
+            div.className = 'message-box';
+            div.textContent = pesan;
+            messagesContainer.appendChild(div);
+        });
+
+        // Bikin Animasi Background Bintang & Hati
+        const bgContainer = document.getElementById('bg-particles');
+        const icons = ['✨', '💛', '🤍', '🧸'];
+        for (let i = 0; i < 15; i++) {
+            let particle = document.createElement('div');
+            particle.className = 'bg-particle';
+            particle.textContent = icons[Math.floor(Math.random() * icons.length)];
+            particle.style.left = Math.random() * 100 + 'vw';
+            particle.style.animationDuration = (Math.random() * 5 + 5) + 's';
+            particle.style.animationDelay = Math.random() * 5 + 's';
+            bgContainer.appendChild(particle);
+        }
+
+        // Interaksi Tahap 1
+        const dollBtn = document.getElementById('doll-btn');
+        const tapBtn = document.getElementById('tap-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const cardGame = document.getElementById('card-game');
+        const cardMessage = document.getElementById('card-message');
+
+        function handleTap(e) {
+            if(currentClicks >= CONFIG.jumlahKlikGame) return;
+
+            currentClicks++;
+            
+            // Update Progress
+            let progressPercentage = (currentClicks / CONFIG.jumlahKlikGame) * 100;
+            progressBar.style.width = progressPercentage + '%';
+
+            // Animasi Boneka
+            dollBtn.classList.remove('shake');
+            void dollBtn.offsetWidth; // Trigger reflow
+            dollBtn.classList.add('shake');
+
+            // Partikel Klik (Efek Letupan)
+            createClickEffect(e);
+
+            // Cek jika target tercapai
+            if(currentClicks >= CONFIG.jumlahKlikGame) {
+                tapBtn.textContent = "Berhasil! ✨";
+                setTimeout(showMainMessage, 800);
+            }
+        }
+
+        function createClickEffect(e) {
+            // Posisi klik (mouse atau touch)
+            let x, y;
+            if (e.touches) {
+                x = e.touches[0].clientX;
+                y = e.touches[0].clientY;
+            } else {
+                x = e.clientX || (window.innerWidth / 2);
+                y = e.clientY || (window.innerHeight / 2);
+            }
+
+            for(let i=0; i<4; i++) {
+                let p = document.createElement('div');
+                p.className = 'click-particle';
+                p.textContent = ['💖', '✨', '💛'][Math.floor(Math.random()*3)];
+                p.style.left = x + 'px';
+                p.style.top = y + 'px';
+                
+                // Random arah letupan
+                let tx = (Math.random() - 0.5) * 150 + 'px';
+                let ty = (Math.random() - 1) * 150 + 'px';
+                p.style.setProperty('--tx', tx);
+                p.style.setProperty('--ty', ty);
+                
+                document.body.appendChild(p);
+                
+                setTimeout(() => p.remove(), 1000);
+            }
+        }
+
+        function showMainMessage() {
+            // Sembunyikan Tahap 1
+            cardGame.classList.remove('active');
+            cardGame.classList.add('hidden');
+            
+            // Confetti Screen (Banyak)
+            for(let i=0; i<30; i++) {
+                setTimeout(() => createClickEffect({clientX: window.innerWidth/2, clientY: window.innerHeight/2}), i*50);
+            }
+
+            // Tampilkan Tahap 2 setelah delay transisi
+            setTimeout(() => {
+                cardMessage.classList.remove('hidden');
+                cardMessage.classList.add('active');
+            }, 600);
+        }
+
+        // Event Listener
+        dollBtn.addEventListener('click', handleTap);
+        tapBtn.addEventListener('click', handleTap);
+        // Supaya responsif di HP
+        dollBtn.addEventListener('touchstart', (e) => { e.preventDefault(); handleTap(e); });
+        tapBtn.addEventListener('touchstart', (e) => { e.preventDefault(); handleTap(e); });
+
+    </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"480c9d8468c44ad3bed3c74fbcc6d6f3","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
